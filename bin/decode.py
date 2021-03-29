@@ -7,7 +7,7 @@ from gematria38 import mappings
 def main(ordinal=False, reduced=False, both=False):
     """A script to decode English."""
     if ordinal or both:
-        o = mappings.EnglishOrdinal()
+        o = mappings.Ordinal()
         
 
 if __name__ == '__main__':

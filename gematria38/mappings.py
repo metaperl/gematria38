@@ -1,10 +1,12 @@
 from dataclasses import dataclass, field
 from typing import List
+from loguru import logger
 
 
+ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 @dataclass
-class EnglishOrdinal:
+class Ordinal:
     
     letters: List[str] = field(default_factory=list)
     numbers: List[int] = field(default_factory=list)
@@ -23,15 +25,17 @@ class EnglishOrdinal:
             return ord(c) - 64
         if c.islower():
             return ord(c) - 96
-        raise Exception(f"weird data ({c}) passed.")
+        logger.debug(f"weird data ({c}) passed.")
+        return 0
     
     def decode(self, s):
         self.letters = s
         self.numbers = [self.ord(c) for c in self.letters]
+        return self
              
 
 @dataclass
-class EnglishReduced(EnglishOrdinal):
+class Reduced(Ordinal):
     
     def ord(self, c):
         r = super().ord(c)
@@ -40,21 +44,62 @@ class EnglishReduced(EnglishOrdinal):
         if r <= 18:
             return r - 9
         return r - 18
-    # raise Exception(f"weird data ({c}) passed.") 
+
     
+@dataclass
+class ReverseOrdinal(Ordinal):
+    
+    # 1 -> 26
+    # 2 -> 25
+    # 3 -> 24
+    # 24 -> 3
+    # 25 -> 2
+    # 26 -> 1
+    
+    def ord(self, c):
+        _ = super().ord(c)
+        r = 27 - _
+        logger.debug(f"The character '{c}' {_=}, {r=}")
+        if r <= 9:
+            return r
+        if r <= 18:
+            return r - 9
+        return r - 18
+
+
+@dataclass
+class ReverseReduced(ReverseOrdinal):
+    def ord(self, c):
+        r = super().ord(c)
+        if r <= 9:
+            return r
+        if r <= 18:
+            return r - 9
+        return r - 18
+
     
 if __name__ == '__main__':
-    test_data = 'ABZIabzi'
-    e = EnglishOrdinal()
+    test_data = 'azlm'
+    e = Ordinal()
     for c in test_data:
         r = e.ord(c)
         print(f"{c=} -> {r=}.")
     
-    e2 = EnglishReduced()
+    e2 = Reduced()
     for c in test_data:
         r = e2.ord(c)
         print(f"{c=} -> {r=}.")
     
-    e2.decode("English")
-    print(f"{e2}")
- 
+    e3 = ReverseOrdinal()
+    for c in test_data:
+        r = e3.ord(c)
+        print(f"{c=} -> {r=}.")
+        
+    e4 = ReverseReduced()
+    for c in test_data:
+        r = e4.ord(c)
+        print(f"{c=} -> {r=}.")
+            
+#     print(e2.decode("Morals and Dogma"))
+#  
+#     print(e.decode("Washington, D.C."))
