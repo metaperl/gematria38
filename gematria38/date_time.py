@@ -19,6 +19,12 @@ def month_and_day_of(date_item):
     a = arrow_from_date_item(date_item)
     return (a.month, a.day), a
 
+def month_day_as_integer(date_item):
+    (month, day), _ = month_and_day_of(date_item)
+    result = f"{month}{day}"
+    result = int(result)
+    return result
+
 if __name__ == '__main__':
     date_str = "Feb 13, 2016"
     print(day_of_year(date_str))
@@ -27,3 +33,7 @@ if __name__ == '__main__':
     mandd, a = month_and_day_of(date_str)
     print(type(a))
     print(day_of_year(a))
+    
+    date_str = "Feb 11, 1929"
+    print(month_day_as_integer(date_str))
+    

@@ -146,20 +146,24 @@ if __name__ == '__main__':
     e2 = Reduced()
     e3 = ReverseOrdinal()
     e4 = ReverseReduced()
+    
+    _ = "monkey"
 
-    print(e1.decode(ALPHABET))
-    print(e2.decode(ALPHABET))
-    print(e3.decode(ALPHABET))
-    print(e4.decode(ALPHABET))
+    print(e1.decode(_))
+    print(e2.decode(_))
+    print(e3.decode(_))
+    print(e4.decode(_))
     
-    k = Reduced(k=True)
-    print(k.decode("kabbalah"))
+#     k = Reduced(k=True)
+#     print(k.decode("kabbalah"))
+#     
+#     v = Reduced(v=True)
+#     print(k.decode("value"))
+#     
+#     print(e2.decode("english"))
+#     e2.s = True
+#     print(e2.decode("english"))
     
-    v = Reduced(v=True)
-    print(k.decode("value"))
     
-    print(e2.decode("english"))
-    e2.s = True
-    print(e2.decode("english"))
 
     
