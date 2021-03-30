@@ -51,16 +51,21 @@ class Cipher:
 class Ordinal(Cipher):
     pass
 
+class HasAlternates:
 
+    def should_alternate(self, c):
+        if c in self.alternates and getattr(self, c):
+            return True
+        else:
+            return False
 
 @dataclass
-class Reduced(Ordinal):
+class Reduced(Ordinal,HasAlternates):
     
     k: bool = False
     s: bool = False
     v: bool = False
     
-
     
     def __post_init__(self):
         if self.k: 
@@ -74,11 +79,7 @@ class Reduced(Ordinal):
         }
     
     def ord(self, c):
-        if c == 'k' and self.k:
-            return self.alternates[c]
-        if c == 'v' and self.v:
-            return self.alternates[c]
-        if c == 's' and self.s:
+        if self.should_alternate(c):
             return self.alternates[c]
         
         r = super().ord(c)
@@ -87,7 +88,9 @@ class Reduced(Ordinal):
     @property
     def name(self):
         return f"{self.__class__.__name__} ({self.k=}, {self.s=}, {self.v=})"
-    
+
+
+
 @dataclass
 class ReverseOrdinal(Ordinal):
     
@@ -105,11 +108,38 @@ class ReverseOrdinal(Ordinal):
 
 
 @dataclass
-class ReverseReduced(ReverseOrdinal):
+class ReverseReduced(ReverseOrdinal,HasAlternates):
+    
+    p: bool = False
+    h: bool = False
+    e: bool = False
+    
+    def __post_init__(self):
+        if self.p: 
+            self.e = True
+        if self.e:
+            self.p = True
+        self.alternates = {
+            'p' : 11,
+            'h' : 10,
+            'e' : 22
+        }
+    
     def ord(self, c):
+        if c == 'p' and self.p:
+            return self.alternates[c]
+        if c == 'h' and self.h:
+            return self.alternates[c]      
+        if c == 'e' and self.e:
+            return self.alternates[c]
+    
         r = super().ord(c)
         return reduce(r)
-
+    
+    @property
+    def name(self):
+        return f"{self.__class__.__name__} ({self.p=}, {self.h=}, {self.e=})"
+    
     
 if __name__ == '__main__':
     e1 = Ordinal()
