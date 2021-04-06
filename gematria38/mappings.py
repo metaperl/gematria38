@@ -167,7 +167,32 @@ class ReverseSumerian(ReverseOrdinal):
 
         r = super().ord(c)
         return 6 * r
+
+
+@dataclass
+class FrancisBacon(Cipher):
+    """Case-sensitive cipher."""
     
+    def ord(self, c):
+        if c.isupper():
+            return ord(c) - 38  
+        if c.islower():
+            return ord(c) - 96
+        logger.debug(f"weird data ({c}) passed.")
+        return 0    
+    
+
+@dataclass
+class FrancBaconis(Ordinal):
+    """Case-sensitive cipher."""
+    
+    def ord(self, c):
+        parent = super().ord(c) * 2
+        if c.isupper():
+            return parent - 1
+        if c.islower():
+            return parent
+
     
 if __name__ == '__main__':
     e1 = Ordinal()
@@ -176,16 +201,18 @@ if __name__ == '__main__':
     e4 = ReverseReduced()
     e5 = Sumerian()
     e6 = ReverseSumerian()
+    e7 = FrancisBacon()
+    e8 = FrancBaconis()
 
     
-    _ = "abcxyz"
+    _ = "abcxyzABCXYZ"
 
 #     print(e1.decode(_))
 #     print(e2.decode(_))
 #     print(e3.decode(_))
 #     print(e4.decode(_))
-    print(e5.decode(_))
-    print(e6.decode(_))
+    # print(e5.decode(_))
+    print(e8.decode(_))
     
 #     k = Reduced(k=True)
 #     print(k.decode("kabbalah"))
