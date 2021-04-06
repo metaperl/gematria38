@@ -26,6 +26,17 @@ def month_day_as_integers(date_item):
 
     return [int(r) for r in (result1, result2)]
 
+def remove_decimal_from(number):
+    """"3.14 -> 314"""
+    pass
+
+def factors_of(number):
+    """Return all factor of a number."""
+    pass
+
+# TODO: perfect numbers
+# - nth perfect number... p.45 L&N
+
 if __name__ == '__main__':
     date_str = "Feb 13, 2016"
     print(day_of_year(date_str))

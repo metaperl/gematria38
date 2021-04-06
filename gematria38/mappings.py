@@ -139,6 +139,34 @@ class ReverseReduced(ReverseOrdinal,HasAlternates):
     @property
     def name(self):
         return f"{self.__class__.__name__} ({self.p=}, {self.h=}, {self.e=})"
+
+@dataclass
+class Sumerian(Ordinal):
+    
+    # 1 -> 26
+    # 2 -> 25
+    # 3 -> 24
+    # 24 -> 3
+    # 25 -> 2
+    # 26 -> 1
+    
+    def ord(self, c):
+        _ = super().ord(c)
+        r = 6 * _
+        return r
+
+
+@dataclass
+class ReverseSumerian(ReverseOrdinal):
+    
+    p: bool = False
+    h: bool = False
+    e: bool = False
+    
+    def ord(self, c):
+
+        r = super().ord(c)
+        return 6 * r
     
     
 if __name__ == '__main__':
@@ -146,13 +174,18 @@ if __name__ == '__main__':
     e2 = Reduced()
     e3 = ReverseOrdinal()
     e4 = ReverseReduced()
-    
-    _ = "monkey"
+    e5 = Sumerian()
+    e6 = ReverseSumerian()
 
-    print(e1.decode(_))
-    print(e2.decode(_))
-    print(e3.decode(_))
-    print(e4.decode(_))
+    
+    _ = "abcxyz"
+
+#     print(e1.decode(_))
+#     print(e2.decode(_))
+#     print(e3.decode(_))
+#     print(e4.decode(_))
+    print(e5.decode(_))
+    print(e6.decode(_))
     
 #     k = Reduced(k=True)
 #     print(k.decode("kabbalah"))
