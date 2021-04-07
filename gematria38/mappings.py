@@ -24,13 +24,7 @@ class Cipher:
     def sum(self):
         return sum(self.numbers)
     
-    def ord(self, c):
-        if c.isupper():
-            return ord(c) - 64
-        if c.islower():
-            return ord(c) - 96
-        logger.debug(f"weird data ({c}) passed.")
-        return 0    
+
     
     def decode(self, s):
         self.letters = s
@@ -49,7 +43,13 @@ class Cipher:
 
 @dataclass
 class Ordinal(Cipher):
-    pass
+    def ord(self, c):
+        if c.isupper():
+            return ord(c) - 64
+        if c.islower():
+            return ord(c) - 96
+        logger.debug(f"weird data ({c}) passed.")
+        return 0    
 
 class HasAlternates:
 
@@ -58,6 +58,19 @@ class HasAlternates:
             return True
         else:
             return False
+        
+class HasLetterMap:
+    
+    def letter_map(self, numbers):
+        z1 = zip(ALPHABET, numbers)
+        result = { k:v for (k,v) in z1}
+        for c, i in zip(ALPHABET.lower(), numbers):
+            result[c] = i
+        return result
+    
+    
+    def ord(self, c):
+        return self.mapping[c]    
 
 @dataclass
 class Reduced(Ordinal,HasAlternates):
@@ -193,7 +206,32 @@ class FrancBaconis(Ordinal):
         if c.islower():
             return parent
 
+
+@dataclass
+class Jewish(Cipher,HasLetterMap):
     
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,2,3,4,5,6,7,8,9,
+            600,10,20,30,40,50,60,70,80,90,
+            100,200,700,900,300,400,500
+            ])
+        logger.debug(f"{self.mapping=}")
+
+
+
+@dataclass
+class EnglishExtended(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,2,3,4,5,6,7,8,9,
+            10,20,30,40,50,60,70,80,90,
+            100,200,300,400,500,600,700,800
+            ])
+        logger.debug(f"{self.mapping=}")
+    
+
 if __name__ == '__main__':
     e1 = Ordinal()
     e2 = Reduced()
@@ -203,6 +241,8 @@ if __name__ == '__main__':
     e6 = ReverseSumerian()
     e7 = FrancisBacon()
     e8 = FrancBaconis()
+    e9 = Jewish()
+    e10 = EnglishExtended()
 
     
     _ = "abcxyzABCXYZ"
@@ -212,7 +252,7 @@ if __name__ == '__main__':
 #     print(e3.decode(_))
 #     print(e4.decode(_))
     # print(e5.decode(_))
-    print(e8.decode(_))
+    print(e10.decode(_))
     
 #     k = Reduced(k=True)
 #     print(k.decode("kabbalah"))
