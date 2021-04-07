@@ -326,6 +326,24 @@ class PrimeNumbers(Cipher,HasLetterMap):
             ])
         self.debug()  
 
+@dataclass
+class TrigonalNumbers(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210,231,253,276,300,325,351
+            ])
+        self.debug()  
+
+@dataclass
+class SquareNumbers(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,4,9,16,25,36,49,64,81,100,121,144,169,196,225,256,289,324,361,400,441,484,529,576,625,676
+             ])
+        self.debug() 
+
 if __name__ == '__main__':
     e1 = Ordinal()
     e2 = Reduced()
