@@ -313,6 +313,18 @@ class LCHKabbalah(Cipher,HasLetterMap):
             5,20,2,23,13,12,11,3,0,7,17,1,21,24,10,4,16,14,15,9,25,22,8,6,18,19
             ])
         self.debug()  
+        
+        
+@dataclass
+class PrimeNumbers(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            2, 3, 5, 7, 11,  13, 17, 19,  23, 
+            29, 31, 37, 41, 43, 47, 53, 59,  61,
+            67, 71, 73, 79,  83,  89,  97,  101 
+            ])
+        self.debug()  
 
 if __name__ == '__main__':
     e1 = Ordinal()
@@ -331,18 +343,19 @@ if __name__ == '__main__':
     e14 = ALWKabbalah()
     e15 = KFWKabbalah()
     e16 = LCHKabbalah()
+    e17 = PrimeNumbers()
 
     
-    _ = "Riddle"
+    _ = "ritual sacrifice"
 
 #     print(e1.decode(_))
 #     print(e2.decode(_))
 #     print(e3.decode(_))
 #     print(e4.decode(_))
     # print(e5.decode(_))
-    print(e14.decode(_))
-    print(e14.decode(_))
-    print(e16.decode(_))
+    #print(e14.decode(_))
+    # print(e14.decode(_))
+    print(e17.decode(_))
     
     
 #     k = Reduced(k=True)
