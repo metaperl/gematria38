@@ -61,6 +61,10 @@ class HasAlternates:
         
 class HasLetterMap:
     
+    def debug(self):
+        logger.debug(f"{self.name} has {self.mapping=}")
+        
+    
     def letter_map(self, numbers):
         z1 = zip(ALPHABET, numbers)
         result = { k:v for (k,v) in z1}
@@ -70,7 +74,11 @@ class HasLetterMap:
     
     
     def ord(self, c):
-        return self.mapping[c]    
+        try:
+            return self.mapping[c]
+        except KeyError:
+            logger.debug(f"ignoring character {c}.")
+            return 0    
 
 @dataclass
 class Reduced(Ordinal,HasAlternates):
@@ -169,6 +177,7 @@ class Sumerian(Ordinal):
         return r
 
 
+
 @dataclass
 class ReverseSumerian(ReverseOrdinal):
     
@@ -230,7 +239,80 @@ class EnglishExtended(Cipher,HasLetterMap):
             100,200,300,400,500,600,700,800
             ])
         logger.debug(f"{self.mapping=}")
+
+@dataclass
+class Septenary(Cipher,HasLetterMap):
     
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,2,3,4,5,6,7,
+            6,5,4,3,2,1,
+            1,2,3,4,5,6,7,
+            6,5,4,3,2,1,
+            ])
+        logger.debug(f"{self.mapping=}")
+        
+@dataclass
+class Chaldean(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,2,3,4,5,8,
+            3,5,
+            1,1,2,3,4,5,7,8,
+            1,2,3,4,
+            6,6,6,
+            5,1,7
+            ])
+        logger.debug(f"{self.mapping=}")                
+
+@dataclass
+class Satanic(Ordinal):
+    
+    # 1 -> 26
+    # 2 -> 25
+    # 3 -> 24
+    # 24 -> 3
+    # 25 -> 2
+    # 26 -> 1
+    
+    def ord(self, c):
+        _ = super().ord(c)
+        r = 35 + _
+        return r
+    
+    
+@dataclass
+class ALWKabbalah(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            1,20,13,6,25,18,11,4,23,16,9,
+            2,21,14,7,26,19,12,5,24,17,10,
+            3,22,15,8
+            ])
+        self.debug()  
+        
+
+@dataclass
+class KFWKabbalah(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            9,20,13,6,17,
+            2,19,12,23,16,1,18,5,
+            22,15,26,11,4,21,8,25,10,3,14,7,24
+            ])
+        self.debug()  
+        
+@dataclass
+class LCHKabbalah(Cipher,HasLetterMap):
+    
+    def __post_init__(self):
+        self.mapping = self.letter_map([
+            5,20,2,23,13,12,11,3,0,7,17,1,21,24,10,4,16,14,15,9,25,22,8,6,18,19
+            ])
+        self.debug()  
 
 if __name__ == '__main__':
     e1 = Ordinal()
@@ -243,16 +325,25 @@ if __name__ == '__main__':
     e8 = FrancBaconis()
     e9 = Jewish()
     e10 = EnglishExtended()
+    e11 = Satanic()
+    e12 = Septenary()
+    e13 = Chaldean()
+    e14 = ALWKabbalah()
+    e15 = KFWKabbalah()
+    e16 = LCHKabbalah()
 
     
-    _ = "abcxyzABCXYZ"
+    _ = "Riddle"
 
 #     print(e1.decode(_))
 #     print(e2.decode(_))
 #     print(e3.decode(_))
 #     print(e4.decode(_))
     # print(e5.decode(_))
-    print(e10.decode(_))
+    print(e14.decode(_))
+    print(e14.decode(_))
+    print(e16.decode(_))
+    
     
 #     k = Reduced(k=True)
 #     print(k.decode("kabbalah"))
