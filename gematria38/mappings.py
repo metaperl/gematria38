@@ -364,9 +364,9 @@ if __name__ == '__main__':
     e17 = PrimeNumbers()
 
     
-    _ = "ritual sacrifice"
+    _ = "Asheville"
 
-#     print(e1.decode(_))
+    print(e1.decode(_))
 #     print(e2.decode(_))
 #     print(e3.decode(_))
 #     print(e4.decode(_))

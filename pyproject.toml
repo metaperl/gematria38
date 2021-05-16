@@ -11,6 +11,7 @@ loguru = "^0.5.3"
 arrow = "^1.0.3"
 dateparser = "^1.0.0"
 primelib = "^1.0.0"
+NumberSequences = "^0.17"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
